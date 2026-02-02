@@ -30,18 +30,16 @@ function knightMoves(start, end) {
   while (queue.length > 0 && !found) {
     // While our queue is not empty and we haven't found the square we want
     let curr = queue.shift();
-    if (curr[0] === end)
-      found = true; // If it's the target, we stop
+    if (curr[0] === end) found = true; // If it's the target, we stop
   
-      let neighbors = neighbors(curr[0]); // We generate his neighbors
+    let neighbors = neighbors(curr[0]); // We generate his neighbors
       
-      for (let i = 0; i < neighbors.length; i++) {
-        if (!visited.some(pos => pos[0] === neighbors[0] && pos[1] === neighbors[1])) {  // We first check the neighbor hasn't been visited (i.e. : enqueud) yet
+    for (let i = 0; i < neighbors.length; i++) {
+        if (!visited.some(pos => pos[0] === neighbors[i][0] && pos[1] === neighbors[i][1])) {  // We first check the neighbor hasn't been visited (i.e. : enqueud) yet
           queue.push([neighbors[i], curr]); // If not, we enqueue it while putting the current square as its parent
           visited.push(neighbors[i]); // We then mark it as visited
         }
-      }
-    
+    }
   }
 }
 
