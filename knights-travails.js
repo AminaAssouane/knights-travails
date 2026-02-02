@@ -26,12 +26,15 @@ function knightMoves(start, end) {
   let queue = [[start, null]]; // Initializing the queue with the start square and putting null as its parent
   let visited = [start]; // Marking it as visited
   let found = false;
+  let targetSquare = null;
 
   while (queue.length > 0 && !found) {
     // While our queue is not empty and we haven't found the square we want
     let curr = queue.shift();
-    if (curr[0] === end) found = true; // If it's the target, we stop
-  
+    if (curr[0][0] === end[0] && curr[0][1] === end[1]) {
+        found = true; // If it's the target, we stop
+        targetSquare = curr; // targetSquare receives the current (final) square, this is necessary because we need it to reconstruct the path (curr contains the parent as well)
+    }
     let neighbors = neighbors(curr[0]); // We generate his neighbors
       
     for (let i = 0; i < neighbors.length; i++) {
@@ -41,6 +44,19 @@ function knightMoves(start, end) {
         }
     }
   }
+
+  // Reconstructing the path
+  if (found === true) {
+    let path = [];
+    let square = targetSquare; 
+    while (square[0][0] !== start[0] && square[0][1] !== start[1]) {
+      path.push(square);
+      square = square[1];
+    }
+    path.reverse;
+  }
+
+  return path;
 }
 
 /*
