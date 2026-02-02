@@ -32,45 +32,36 @@ function knightMoves(start, end) {
     // While our queue is not empty and we haven't found the square we want
     let curr = queue.shift();
     if (curr[0][0] === end[0] && curr[0][1] === end[1]) {
-        found = true; // If it's the target, we stop
-        targetSquare = curr; // targetSquare receives the current (final) square, this is necessary because we need it to reconstruct the path (curr contains the parent as well)
+      found = true; // If it's the target, we stop
+      targetSquare = curr; // targetSquare receives the current (final) square, this is necessary because we need it to reconstruct the path (curr contains the parent as well)
     }
-    let neighbors = neighbors(curr[0]); // We generate his neighbors
-      
-    for (let i = 0; i < neighbors.length; i++) {
-        if (!visited.some(pos => pos[0] === neighbors[i][0] && pos[1] === neighbors[i][1])) {  // We first check the neighbor hasn't been visited (i.e. : enqueud) yet
-          queue.push([neighbors[i], curr]); // If not, we enqueue it while putting the current square as its parent
-          visited.push(neighbors[i]); // We then mark it as visited
-        }
+    let neighborsList = neighbors(curr[0]); // We generate his neighbors
+
+    for (let i = 0; i < neighborsList.length; i++) {
+      if (
+        !visited.some(
+          (pos) =>
+            pos[0] === neighborsList[i][0] && pos[1] === neighborsList[i][1],
+        )
+      ) {
+        // We first check the neighbor hasn't been visited (i.e. : enqueud) yet
+        queue.push([neighborsList[i], curr]); // If not, we enqueue it while putting the current square as its parent
+        visited.push(neighborsList[i]); // We then mark it as visited
+      }
     }
   }
 
   // Reconstructing the path
-  if (found === true) {
-    let path = [];
-    let square = targetSquare; 
-    while (square[0][0] !== start[0] && square[0][1] !== start[1]) {
-      path.push(square);
-      square = square[1];
-    }
-    path.reverse;
+  let path = [];
+  let square = targetSquare;
+  while (square[0][0] !== start[0] && square[0][1] !== start[1]) {
+    path.push(square[0]);
+    square = square[1];
   }
+  path.push(square[0]);
+  path.reverse();
 
   return path;
 }
 
-/*
-    // Generate neighbors
-    let nextSquares = neighbors(currPos);
-
-    // Enqueue unvisited neighbors
-    for (let i = 0; i < nextSquares.length; i++) {
-      let neighbor = nextSquares[i];
-      // Only enqueue if not visited
-      if (!visited.some(pos => pos[0] === neighbor[0] && pos[1] === neighbor[1])) {
-        queue.push([neighbor, [currPos, parent]]); // Keep track of parent
-        visited.push(neighbor);                    // Mark visited when enqueueing
-      }
-    }
-  }
-}
+console.log(knightMoves([0, 0], [3, 3]));
