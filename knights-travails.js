@@ -32,16 +32,30 @@ function knightMoves(start, end) {
     let curr = queue.shift();
     if (curr[0] === end)
       found = true; // If it's the target, we stop
-    else if (!visited.includes(curr[0])) {
-      // We always check if the square hasn't been visited before we generate his neighbors
-      visited.push(curr[0]); // We mark it as visited
+  
       let neighbors = neighbors(curr[0]); // We generate his neighbors
-      for (let i = 0; i < neighbors.length(); i++) {
-        // We enqueue the non visited neighbors
-        if (!visited.includes(neighbors[i])) {
-          queue.push([neighbors[i], curr]);
-          visited.push(neighbors[i]);
+      
+      for (let i = 0; i < neighbors.length; i++) {
+        if (!visited.some(pos => pos[0] === neighbors[0] && pos[1] === neighbors[1])) {  // We first check the neighbor hasn't been visited (i.e. : enqueud) yet
+          queue.push([neighbors[i], curr]); // If not, we enqueue it while putting the current square as its parent
+          visited.push(neighbors[i]); // We then mark it as visited
         }
+      }
+    
+  }
+}
+
+/*
+    // Generate neighbors
+    let nextSquares = neighbors(currPos);
+
+    // Enqueue unvisited neighbors
+    for (let i = 0; i < nextSquares.length; i++) {
+      let neighbor = nextSquares[i];
+      // Only enqueue if not visited
+      if (!visited.some(pos => pos[0] === neighbor[0] && pos[1] === neighbor[1])) {
+        queue.push([neighbor, [currPos, parent]]); // Keep track of parent
+        visited.push(neighbor);                    // Mark visited when enqueueing
       }
     }
   }
